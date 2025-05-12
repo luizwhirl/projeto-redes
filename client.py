@@ -1,5 +1,13 @@
 import socket
 import json
+import datetime
+
+def validar_data_hora(data_hora_str):
+    try:
+        datetime.datetime.strptime(data_hora_str, "%Y-%m-%d %H:%M:%S")
+        return True
+    except ValueError:
+        return False
 
 def menu():
     print("\n=== MENU ===")
@@ -20,12 +28,22 @@ def main():
         opcao = menu()
         if opcao == '1':
             nome = input("Nome da tarefa: ")
-            horario = input("Hora agendada (AAAA-MM-DD HH:MM:SS): ")
+            while True:
+                horario = input("Hora agendada (AAAA-MM-DD HH:MM:SS): ")
+                if validar_data_hora(horario):
+                    data_agendada = datetime.datetime.strptime(horario, "%Y-%m-%d %H:%M:%S")
+                    if data_agendada <= datetime.datetime.now():
+                        print("Erro: Não é possível agendar para uma data/hora no passado.")
+                        continue
+                    break
+                else:
+                    print("Formato inválido. Use o formato AAAA-MM-DD HH:MM:SS (ex: 2023-12-31 23:59:00)")
+            
             cliente = enviar_comando(f"agendar;{nome};{horario}")
             resposta = cliente.recv(1024).decode('utf-8')
             print(resposta)
             if "Digite o comando" in resposta:
-                comando_exec = input("Comando a ser executado (ex: start calc ou firefox google.com): ")
+                comando_exec = input("Comando a ser executado (ex: start calc, start regedit, etc.): ")
                 cliente.send(comando_exec.encode('utf-8'))
                 resposta_final = cliente.recv(1024).decode('utf-8')
                 print(resposta_final)

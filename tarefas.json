@@ -2,6 +2,11 @@
     {
         "nome": "mercado",
         "hora_agendada": "2025-10-05 12:05:22",
-        "comando": "firefox google.com"
+        "comando": "opera google.com"
+    },
+    {
+        "nome": "mercado",
+        "hora_agendada": "2025-10-05 12:33:44",
+        "comando": "start calc"
     }
 ]
