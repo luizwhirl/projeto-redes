@@ -2,6 +2,8 @@ import socket
 import json
 import datetime
 
+
+#string -> datetime
 def validar_data_hora(data_hora_str):
     try:
         datetime.datetime.strptime(data_hora_str, "%Y-%m-%d %H:%M:%S")
@@ -17,6 +19,9 @@ def menu():
     print("0. Sair")
     return input("Escolha uma opção: ")
 
+
+# cria uma conexão com o servidor
+# envia um comando e retornar um socket
 def enviar_comando(comando):
     cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     cliente.connect(('localhost', 5555))
